@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen">
         <div class="w-full max-w-sm">
-            <form action="">
+            <form @submit.prevent="onsubmit" action="">
                 <Card>
                     <CardHeader>
                         <CardTitle class="text-2xl">Login</CardTitle>
@@ -21,7 +21,7 @@
                         </div>
                     </CardContent>
                     <CardFooter class="flex-col space-y-2">
-                        <Button class="w-full" type="submit">Register</Button>
+                        <Button class="w-full" type="submit">Login</Button>
                         <p>
                             Don't have an account?
                             <NuxtLink to="/auth/register" class="border-b border-gray-500 text-muted-foreground hover:text-primary">Register</NuxtLink>
@@ -42,6 +42,17 @@
         email: '',
         password: '',
     });
+    const onsubmit = async () => {
+        try {
+            await $fetch('/api/auth/login', {
+                method: 'POST',
+                body: formLogin.value,
+            });
+            navigateTo('/');
+        } catch (error) {
+            console.error('Registration failed', error);
+        }
+    };
 </script>
 
 <style lang="scss" scoped></style>
