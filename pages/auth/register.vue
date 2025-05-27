@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen">
         <div class="w-full max-w-sm">
-            <form action="">
+            <form @submit.prevent="onsubmit" action="">
                 <Card>
                     <CardHeader>
                         <CardTitle class="text-2xl">Register</CardTitle>
@@ -48,6 +48,17 @@
         email: '',
         password: '',
     });
+    const onsubmit = async () => {
+        try {
+            await $fetch('/api/auth/register', {
+                method: 'POST',
+                body: formRegister.value,
+            });
+            navigateTo('/');
+        } catch (error) {
+            console.error('Registration failed:', error);
+        }
+    };
 </script>
 
 <style lang="scss" scoped></style>
