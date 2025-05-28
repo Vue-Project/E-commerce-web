@@ -21,7 +21,7 @@
                         </div>
                     </CardContent>
                     <CardFooter class="flex-col space-y-2">
-                        <Button class="w-full" type="submit">Login</Button>
+                        <Button :disabled="isLoading" class="w-full" type="submit">Login</Button>
                         <p>
                             Don't have an account?
                             <NuxtLink to="/auth/register" class="border-b border-gray-500 text-muted-foreground hover:text-primary">Register</NuxtLink>
@@ -34,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+    import { handleError } from '~/server/utils/error';
+
     type PAYLOAD = {
         email: string;
         password: string;
@@ -42,15 +44,25 @@
         email: '',
         password: '',
     });
+    const { toggleLoading, toggleError, showError, showMassage, isLoading } = useStore();
+
     const onsubmit = async () => {
         try {
+            toggleLoading(true);
             await $fetch('/api/auth/login', {
                 method: 'POST',
                 body: formLogin.value,
             });
-            navigateTo('/');
+            showMassage({
+                title: 'Login successful',
+                description: 'You have successfully logged in.',
+            });
+            await navigateTo('/');
         } catch (error) {
-            console.error('Registration failed', error);
+            const err = handleError(error);
+            showError(err);
+        } finally {
+            toggleLoading(false);
         }
     };
 </script>
