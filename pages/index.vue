@@ -4,7 +4,7 @@
 
     <nuxt-link to="/auth/login">login</nuxt-link>
     <nuxt-link to="/auth/register">resgister</nuxt-link>
-    <nuxt-link to="/admin">Admin</nuxt-link>
+    <nuxt-link to="/admin/categories">category</nuxt-link>
     <button @click="logout">logout</button>
 </template>
 <script setup lang="ts">
